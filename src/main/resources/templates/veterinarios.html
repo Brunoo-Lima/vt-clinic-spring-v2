@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lista de Veterinários</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+
+    <body class="min-h-screen bg-gray-50">
+
+    <button class="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-800 text-white">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar incluído como fragmento -->
+    <aside>
+        <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    </aside>
+
+    <div class="container mx-auto px-4 py-6 md:ml-64 mt-16 md:mt-0" th:fragment="content">
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="p-6">
+        <h1 class="text-2xl font-bold mb-6">Veterinários</h1>
+
+         <a th:href="@{'/veterinarios/criar-veterinario'}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Novo</a>
+
+        <div class="overflow-x-auto mt-6">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CRMV</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Especialidade</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Consultas marcadas</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                <!-- Exemplo de conteúdo dinâmico -->
+                <tr th:each="veterinario : ${veterinarios}">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${veterinario.name}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${veterinario.crmv}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${veterinario.specialty}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${veterinario.isAvailable()}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 space-x-2">
+
+                        <a th:href="@{'/veterinarios/editar-veterinario/' + ${veterinario.id}}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">Editar</a>
+                        <button type="button" th:attr="data-id=${veterinario.id}" onclick="deletarVeterinario(this)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm">Excluir</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+        </div>
+    </div>
+    <script th:src="@{/js/script.js}"></script>
+
+
+    <script>
+        function deletarVeterinario(button) {
+            const id = button.getAttribute("data-id");
+
+            if (confirm("Tem certeza que deseja excluir?")) {
+                fetch(`/api/veterinarios/deletar/${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Exclusão bem-sucedida
+                            location.reload();
+                        } else {
+                            // Algo deu errado
+                            alert("Erro ao excluir. Código: " + response.status);
+                        }
+                    })
+                    .catch(err => {
+                        alert("Erro de conexão: " + err.message);
+                    });
+            }
+        }
+    </script>
+    </body>
+</html>

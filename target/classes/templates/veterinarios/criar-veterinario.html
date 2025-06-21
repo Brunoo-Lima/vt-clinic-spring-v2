@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar Veterinário</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  </head>
+
+  <body class="min-h-screen bg-gray-50">
+
+  <div class="w-full px-4 py-6 md:ml-64 mt-16 md:mt-0">
+  <div class="bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-800">Cadastrar Veterinário</h3>
+          <a th:href="@{/veterinarios}" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times"></i>
+          </a>
+        </div>
+
+        <form th:action="@{/veterinarios}" th:object="${veterinario}" method="post">
+          <!-- Campo Nome -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="nome">
+              Nome Completo
+            </label>
+            <input type="text" id="nome" th:field="*{name}"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="Digite o nome do veterinário" required>
+          </div>
+
+          <!-- Campo CRMV -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="crmv">
+              CRMV
+            </label>
+            <input type="text" id="crmv" th:field="*{crmv}"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="Digite o número do CRMV" required>
+            <p class="text-xs text-gray-500 mt-1">Formato: CRMV/UF-12345</p>
+          </div>
+
+          <!-- Campo Especialidade -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="especialidade">
+              Especialidade
+            </label>
+            <select id="especialidade" th:field="*{specialty}"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+              <option value="">Selecione uma especialidade</option>
+              <option value="Clínica Geral">Clínica Geral</option>
+              <option value="Cirurgia">Cirurgia</option>
+              <option value="Dermatologia">Dermatologia</option>
+              <option value="Oftalmologia">Oftalmologia</option>
+              <option value="Cardiologia">Cardiologia</option>
+              <option value="Oncologia">Oncologia</option>
+              <option value="Anestesiologia">Anestesiologia</option>
+              <option value="Outra">Outra</option>
+            </select>
+          </div>
+
+          <div class="flex justify-end space-x-3 mt-6">
+            <a th:href="@{/veterinarios}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+              Cancelar
+            </a>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+              Cadastrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  </body>
+</html>
