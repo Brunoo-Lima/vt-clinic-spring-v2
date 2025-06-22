@@ -1,30 +1,37 @@
 package com.pfc.veterinaryclinic.entity;
 
 import com.pfc.veterinaryclinic.enums.ConsultaStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 //consulta medica
 @Document(collection = "consultas")
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Consulta {
     @Id
     private String id;
-    private final Pet pet;
-    private final Veterinario veterinary;
-    private final String diagnostic;
-    private final String symptoms;
-    private final Date date;
+    private Pet pet;
+    private Tutor tutor;
+    private Veterinario veterinary;
+    private String diagnostic;
+    private String symptoms;
+
+    private LocalDateTime date;
     private ConsultaStatus status;
 
 
     Consulta(Builder builder) {
         this.id = builder.id;
         this.pet = builder.pet;
+        this.tutor = builder.tutor;
         this.veterinary = builder.veterinary;
         this.diagnostic = builder.diagnostic;
         this.symptoms = builder.symptoms;
@@ -33,19 +40,22 @@ public class Consulta {
 
     public static class Builder {
         private String id;
-        private final Pet pet;
-        private final Veterinario veterinary;
-
+        private Pet pet;
+        private Veterinario veterinary;
+        private Tutor tutor;
         private String diagnostic = "Diagnóstico não informado";
         private String symptoms = "Sintomas não informados";
-        private Date date = new Date();
+        private LocalDateTime date = LocalDateTime.now();
 
-        public Builder(Pet pet, Veterinario veterinary) {
-            if (pet == null || veterinary == null) {
+        public Builder () {}
+
+        public Builder(Pet pet, Tutor tutor, Veterinario veterinary) {
+            if (pet == null || tutor == null || veterinary == null) {
                 throw new IllegalArgumentException("Pet e Veterinário são obrigatórios");
             }
             this.pet = pet;
             this.veterinary = veterinary;
+            this.tutor = tutor;
         }
 
         public Builder withId(String id) {
@@ -63,9 +73,9 @@ public class Consulta {
             return this;
         }
 
-        public Builder withDate(Date date) {
+        public Builder withDate(LocalDateTime date) {
             if (date != null) {
-                this.date = new Date(date.getTime());
+                this.date = date;
             }
             return this;
         }

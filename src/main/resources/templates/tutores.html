@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>Lista de Pets</title>
+        <title>Lista de Tutores</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -22,33 +22,27 @@
     <div class="container mx-auto px-4 py-6 md:ml-64 mt-16 md:mt-0" th:fragment="content">
      <div class="bg-white rounded-lg shadow overflow-hidden">
        <div class="p-6">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Lista de Pets</h2>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Lista de Tutores</h2>
 
-           <a th:href="@{'/pets/criar-pet'}" class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Novo</a>
+           <a th:href="@{'/tutores/criar-tutor'}" class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Novo</a>
 
            <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-100">
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Idade</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Raça</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Porte</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tutor</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telefone</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                <th:block th:each="pet : ${pets}">
+                <th:block th:each="tutor : ${tutores}">
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${pet?.name}"></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${pet?.age}"></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${pet?.race}"></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${pet?.gate}"></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${pet?.tutor?.getName()}"></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${tutor?.name}"></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${tutor?.phone}"></td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 space-x-2">
-                            <a th:href="@{'/pets/editar-pet/' + ${pet.id}}" class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white text-sm font-medium rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Editar</a>
-                            <button type="button" th:attr="data-id=${pet.id}" onclick="deletarPet(this)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm">Excluir</button>
+                            <a th:href="@{'/tutores/editar-tutor/' + ${tutor.id}}" class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white text-sm font-medium rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Editar</a>
+                            <button type="button" th:attr="data-id=${tutor.id}" onclick="deletarTutor(this)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm">Excluir</button>
                         </td>
                     </tr>
                 </th:block>
@@ -61,11 +55,11 @@
     <script th:src="@{/js/script.js}"></script>
 
     <script>
-        function deletarPet(button) {
+        function deletarTutor(button) {
             const id = button.getAttribute("data-id");
 
             if (confirm("Tem certeza que deseja excluir?")) {
-                fetch(`/api/pets/deletar/${id}`, {
+                fetch(`/api/tutores/deletar/${id}`, {
                     method: 'DELETE'
                 })
                     .then(response => {

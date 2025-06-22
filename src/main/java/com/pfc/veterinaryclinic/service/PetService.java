@@ -2,7 +2,12 @@ package com.pfc.veterinaryclinic.service;
 
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Tutor;
+import com.pfc.veterinaryclinic.entity.Veterinario;
+import com.pfc.veterinaryclinic.exception.PetNotFoundException;
+import com.pfc.veterinaryclinic.exception.VeterinarioNotFoundException;
 import com.pfc.veterinaryclinic.repository.PetRepository;
+import com.pfc.veterinaryclinic.repository.TutorRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +21,17 @@ public class PetService {
     @Autowired
     private PetRepository petRepository;
 
+    @Autowired
+    private TutorRepository tutorRepository;
+
 
     public PetService(PetRepository petRepository) {
         this.petRepository = petRepository;
     }
 
-    public Pet criarPet(Pet pet) {
+    public Pet criarPet(Pet pet) throws NotFoundException {
+        Tutor tutorCompleto = tutorRepository.findById(pet.getTutor().getId()).orElseThrow(() -> new NotFoundException("Ta isso")); // ou repository
+        pet.setTutor(tutorCompleto);
         return petRepository.save(pet);
     }
 
@@ -37,13 +47,18 @@ public class PetService {
         petRepository.deleteById(id);
     }
 
-    public Optional<Pet> buscarPorId(String id) {
-        return petRepository.findById(id);
+    public Pet buscarPorId(String id) {
+        return petRepository.findById(id)
+                .orElseThrow(() -> new PetNotFoundException("Pet com ID " + id + " não encontrado"));
     }
 
     public List<Pet> listarTodos() {
         return petRepository.findAll();
     }
+
+//    public Pet buscarPorNomeETutor (String name, Tutor tutor){
+//        return petRepository.findPetAndTutor(name, tutor);
+//    }
 
     // Encontra pets por dono
     public List<Pet> buscarPorTutor(Tutor tutor) {

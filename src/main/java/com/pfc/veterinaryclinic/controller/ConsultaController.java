@@ -3,11 +3,16 @@ package com.pfc.veterinaryclinic.controller;
 import com.pfc.veterinaryclinic.entity.Consulta;
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Veterinario;
+//import com.pfc.veterinaryclinic.facade.ClinicaFacade;
 import com.pfc.veterinaryclinic.service.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +22,20 @@ public class ConsultaController {
 
     @Autowired
     private ConsultaService consultaService;
+
+
+//    private final ClinicaFacade clinicaFacade;
+//
+//    public ConsultaController(ClinicaFacade clinicaFacade) {
+//        this.clinicaFacade = clinicaFacade;
+//    }
+//
+//    @PostMapping("/consultas")
+//    public String salvarConsulta(@ModelAttribute ConsultaFormDTO form) throws ParseException {
+//        Date data = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(form.getDate());
+//        clinicaFacade.agendarConsulta(form.getPetName(), form.getTutorName(), form.getVeterinaryId(), data);
+//        return "redirect:/consultas";
+//    }
 
 //    @GetMapping("/criar-consulta")
 //    public String mostrarFormularioConsulta(Model model) {

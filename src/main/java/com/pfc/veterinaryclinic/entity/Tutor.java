@@ -14,6 +14,9 @@ public class Tutor extends Pessoa {
     private String id;
     private String phone;
 
+    public Tutor () {
+        super("");
+    }
 
     public Tutor(String name, String phone) {
         super(name);

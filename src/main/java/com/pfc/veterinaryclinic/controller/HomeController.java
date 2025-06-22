@@ -1,7 +1,9 @@
 package com.pfc.veterinaryclinic.controller;
 
 import com.pfc.veterinaryclinic.entity.*;
+import com.pfc.veterinaryclinic.repository.TutorRepository;
 import com.pfc.veterinaryclinic.service.*;
+import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +28,11 @@ public class HomeController {
     private PetService petService;
     @Autowired
     private ConsultaService consultaService;
+    @Autowired
+    private TutorService tutorService;
+
+    @Autowired
+    private TutorRepository tutorRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -36,8 +43,12 @@ public class HomeController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("layout");
         String fragment = "home :: content";
-        log.info("Carregando fragmento: {}", fragment); // Log para depuração
+
+        boolean hasTutores = tutorRepository.count() > 0; // Verifica se existe ao menos um tutor
+
         modelAndView.addObject("content", fragment);
+        modelAndView.addObject("hasTutores", hasTutores); // Adiciona ao modelo
+
         return modelAndView;
     }
 
@@ -93,6 +104,39 @@ public class HomeController {
         return "pets";
     }
 
+    @GetMapping("/pets/criar-pet")
+    public String mostrarFormularioPet(Model model) {
+        // Adiciona um objeto vazio para o formulário (se necessário)
+        model.addAttribute("pet", new Pet() );
+        model.addAttribute("tutores", tutorService.listarTodas());
+        log.info("Entrou no formulário de criar pet");
+        // Retorna o template Thymeleaf
+        return "pets/criar-pet";
+
+    }
+
+    @GetMapping("/pets/editar-pet/{id}")
+    public String editarFormularioPets(@PathVariable("id") String id, Model model) {
+        List<Tutor> tutores = tutorService.listarTodas();
+        Pet petExistente = petService.buscarPorId(id);
+        model.addAttribute("pet", petExistente);
+        model.addAttribute("tutores", tutores);
+        log.info("Entrou no formulário de editar pet para id: {}", id);
+        return "pets/editar-pet"; // nome do template Thymeleaf
+    }
+
+    @PostMapping("/pets")
+    public String salvarPet(@ModelAttribute Pet pet) throws NotFoundException {
+        petService.criarPet(pet);
+        return "redirect:/pets";
+    }
+
+    @PostMapping("/pets/editar/{id}")
+    public String updatePet(@PathVariable("id") String id, @ModelAttribute Pet pet) {
+        petService.atualizarPet(id, pet);
+        return "redirect:/pets";
+    }
+
     @GetMapping("/consultas")
     public String consultas(Model model) {
         List<Consulta> consultas = consultaService.listarTodos();
@@ -105,12 +149,61 @@ public class HomeController {
 
     @GetMapping("/consultas/criar-consulta")
     public String mostrarFormularioConsulta(Model model) {
-    // Adiciona um objeto vazio para o formulário (se necessário)
-    model.addAttribute("consulta",null);
+        model.addAttribute("consulta", new Consulta());
+        model.addAttribute("veterinarios", veterinarianService.listarTodas());
+        model.addAttribute("tutores", tutorService.listarTodas());
+        model.addAttribute("pets", petService.listarTodos());
 
-    // Retorna o template Thymeleaf
-    return "consultas/criar-consulta";
+        return "consultas/criar-consulta";
+    }
+
+    @PostMapping("/consultas")
+    public String salvarConsulta(@ModelAttribute Consulta consulta) throws NotFoundException {
+        consultaService.criarConsulta(consulta);
+        return "redirect:/consultas";
+    }
+
+
+    @GetMapping("/tutores")
+    public String tutores(Model model) {
+        List<Tutor> tutores = tutorService.listarTodas();
+        model.addAttribute("tutores", tutores);
+        String fragment = "tutores :: content";
+        log.info("Carregando fragmento: {}", fragment); // Log para depuração
+        model.addAttribute("content", fragment);
+        return "tutores";
+    }
+
+    @GetMapping("/tutores/criar-tutor")
+    public String mostrarFormularioTutor(Model model) {
+        // Adiciona um objeto vazio para o formulário (se necessário)
+        model.addAttribute("tutor", new Tutor() );
+        log.info("Entrou no formulário de criar tutor");
+        // Retorna o template Thymeleaf
+        return "tutores/criar-tutor";
 
     }
+
+    @GetMapping("/tutores/editar-tutor/{id}")
+    public String editarFormularioTutores(@PathVariable("id") String id, Model model) {
+        Tutor tutorExistente = tutorService.buscarPorId(id);
+        model.addAttribute("tutor", tutorExistente);
+        log.info("Entrou no formulário de editar tutor para id: {}", id);
+        return "tutores/editar-tutor"; // nome do template Thymeleaf
+    }
+
+    @PostMapping("/tutores")
+    public String salvarPet(@ModelAttribute Tutor tutor) {
+        tutorService.criarTutor(tutor);
+        return "redirect:/tutores";
+    }
+
+    @PostMapping("/tutores/editar/{id}")
+    public String updateTutor(@PathVariable("id") String id, @ModelAttribute Tutor tutor) {
+        tutorService.atualizar(id, tutor);
+        return "redirect:/tutores";
+    }
+
+
 
 }

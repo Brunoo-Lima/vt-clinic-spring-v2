@@ -19,6 +19,8 @@ public interface PetRepository extends MongoRepository<Pet, String> {
     // Encontra pets por espécie
     List<Pet> findByRace(String race);
 
+//    Pet findPetAndTutor(String name, Tutor tutor);
+
 //    // Consulta customizada para pets com histórico médico contendo termo
 ////    @Query("{ 'medicalHistory': { $regex: ?0, $options: 'i' } }")
 //    List<Pet> findByMedicalHistoryContaining(String term);

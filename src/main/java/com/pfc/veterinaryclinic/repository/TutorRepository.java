@@ -11,7 +11,7 @@ import java.util.List;
 public interface TutorRepository extends MongoRepository<Tutor, String> {
 
     // Busca donos por nome (case insensitive)
-    List<Tutor> findByNameContainingIgnoreCase(String name);
+   Tutor findByName(String name);
 
     // Consulta customizada para donos com pets de determinada espécie
 //    @Query("{ 'petIds': { $in: ?0 } }")

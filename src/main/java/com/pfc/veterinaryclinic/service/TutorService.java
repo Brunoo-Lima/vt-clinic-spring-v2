@@ -19,6 +19,10 @@ public class TutorService {
         return tutorRepository.save(tutor);
     }
 
+    public Tutor buscarPorNome(String name) {
+        return tutorRepository.findByName(name);
+    }
+
     public List<Tutor> listarTodas() {
         return tutorRepository.findAll();
     }
@@ -29,9 +33,7 @@ public class TutorService {
     }
 
     public Tutor atualizar(String id, Tutor tutor) {
-        Tutor existente = buscarPorId(id);
-
-        return tutorRepository.save(existente);
+        return tutorRepository.save(tutor);
     }
 
     public void deletar(String id) {

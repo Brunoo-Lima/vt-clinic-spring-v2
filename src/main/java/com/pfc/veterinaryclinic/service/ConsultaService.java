@@ -21,6 +21,7 @@ public class ConsultaService {
     }
 
     public Consulta criarConsulta(Consulta consulta) {
+        consulta.setStatus(ConsultaStatus.SCHEDULED);
         return consultaRepository.save(consulta);
     }
 

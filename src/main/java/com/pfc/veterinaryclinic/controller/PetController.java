@@ -3,6 +3,7 @@ package com.pfc.veterinaryclinic.controller;
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Tutor;
 import com.pfc.veterinaryclinic.service.PetService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class PetController {
     private PetService petService;
 
     @PostMapping
-    public ResponseEntity<Pet> createPet(@RequestBody Pet pet) {
+    public ResponseEntity<Pet> createPet(@RequestBody Pet pet) throws NotFoundException {
         Pet createdPet = petService.criarPet(pet);
         return new ResponseEntity<>(createdPet, HttpStatus.CREATED);
     }
@@ -47,8 +48,8 @@ public class PetController {
         return ResponseEntity.ok(updatedPet);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePet(@PathVariable String id) {
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deletePet(@PathVariable("id") String id) {
         petService.deletarPet(id);
         return ResponseEntity.noContent().build();
     }

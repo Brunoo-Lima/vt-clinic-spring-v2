@@ -41,8 +41,8 @@ public class TutorController {
         return ResponseEntity.ok(updatedOwner);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOwner(@PathVariable String id) {
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deleteOwner(@PathVariable("id") String id) {
         ownerService.deletar(id);
         return ResponseEntity.noContent().build();
     }
