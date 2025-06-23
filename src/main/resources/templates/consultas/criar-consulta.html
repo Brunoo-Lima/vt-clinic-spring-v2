@@ -24,6 +24,15 @@
 
         <form th:action="@{/consultas}" th:object="${consulta}" method="post">
           <div class="mb-4 flex flex-col gap-y-6">
+
+              <select id="tipoConsulta" th:field="*{tipoConsulta}"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required>
+                <option value="">Selecione um status</option>
+                <option value="PRESENCIAL">Presencial</option>
+                <option value="ONLINE">Online</option>
+              </select>
+
             <select id="pet" th:field="*{pet}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required ...>
               <option value="">Selecione um pet</option>
               <option th:each="pet : ${pets}" th:value="${pet.id}" th:text="${pet.name}"></option>
@@ -40,9 +49,11 @@
               <option th:each="vet : ${veterinarios}" th:value="${vet.id}" th:text="${vet.name}"></option>
             </select>
 
-            <input type="text" th:field="*{symptoms}" placeholder="Digite o sintomas" required ...>
+            <input type="text" th:field="*{symptoms}" placeholder="Digite o sintomas"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required ... >
 
-            <input type="datetime-local" th:field="*{date}" required ...>
+            <input type="datetime-local" th:field="*{date}"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required ...>
           </div>
 
           <div class="flex justify-end space-x-3 mt-6">

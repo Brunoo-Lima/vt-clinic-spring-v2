@@ -3,7 +3,6 @@ package com.pfc.veterinaryclinic.controller;
 import com.pfc.veterinaryclinic.entity.Consulta;
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Veterinario;
-//import com.pfc.veterinaryclinic.facade.ClinicaFacade;
 import com.pfc.veterinaryclinic.service.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,31 +20,9 @@ public class ConsultaApiController {
     private ConsultaService consultaService;
 
 
-//    private final ClinicaFacade clinicaFacade;
-//
-//    public ConsultaController(ClinicaFacade clinicaFacade) {
-//        this.clinicaFacade = clinicaFacade;
-//    }
-//
-//    @PostMapping("/consultas")
-//    public String salvarConsulta(@ModelAttribute ConsultaFormDTO form) throws ParseException {
-//        Date data = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(form.getDate());
-//        clinicaFacade.agendarConsulta(form.getPetName(), form.getTutorName(), form.getVeterinaryId(), data);
-//        return "redirect:/consultas";
-//    }
-
-//    @GetMapping("/criar-consulta")
-//    public String mostrarFormularioConsulta(Model model) {
-//        // Adiciona um objeto vazio para o formulário (se necessário)
-//        model.addAttribute("consulta", new Consulta());
-//
-//        // Retorna o template Thymeleaf
-//        return "consultas/criar-consulta";
-//    }
-
     @PostMapping("/criar-consulta")
-    public ResponseEntity<Consulta> scheduleConsultation(@RequestBody Consulta appointment) {
-        Consulta scheduledAppointment = consultaService.criarConsulta(appointment);
+    public ResponseEntity<Consulta> scheduleConsultation(@RequestBody Consulta consulta) {
+        Consulta scheduledAppointment = consultaService.criarConsulta(consulta);
         return new ResponseEntity<>(scheduledAppointment, HttpStatus.CREATED);
     }
 

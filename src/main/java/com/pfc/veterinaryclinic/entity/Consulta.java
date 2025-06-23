@@ -1,6 +1,7 @@
 package com.pfc.veterinaryclinic.entity;
 
 import com.pfc.veterinaryclinic.enums.ConsultaStatus;
+import com.pfc.veterinaryclinic.enums.TipoConsulta;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class Consulta {
     private Veterinario veterinary;
     private String diagnostic;
     private String symptoms;
-
+    private TipoConsulta tipoConsulta;
     private LocalDateTime date;
     private ConsultaStatus status;
 
@@ -37,6 +38,7 @@ public class Consulta {
         this.symptoms = builder.symptoms;
         this.date = builder.date;
         this.status = builder.status;
+        this.tipoConsulta = builder.tipoConsulta;
     }
 
     public static class Builder {
@@ -48,6 +50,7 @@ public class Consulta {
         private String symptoms = "Sintomas não informados";
         private LocalDateTime date = LocalDateTime.now();
         private ConsultaStatus status;
+        private TipoConsulta tipoConsulta;
 
         public Builder () {}
 
@@ -59,12 +62,19 @@ public class Consulta {
             this.veterinary = veterinary;
             this.tutor = tutor;
             this.status = ConsultaStatus.AGENDADA;
+            this.tipoConsulta = TipoConsulta.PRESENCIAL;
         }
 
         public Builder withId(String id) {
             this.id = id;
             return this;
         }
+
+        public Builder withTipoConsulta(TipoConsulta tipoConsulta){
+            this.tipoConsulta = tipoConsulta;
+            return this;
+        }
+
 
         public Builder withDiagnostic(String diagnostic) {
             this.diagnostic = diagnostic;
@@ -86,5 +96,19 @@ public class Consulta {
         public Consulta build() {
             return new Consulta(this);
         }
+    }
+
+    public static Consulta criarConsultaPresencial(Pet pet, Tutor tutor, Veterinario veterinary, LocalDateTime date) {
+        return new Consulta.Builder(pet, tutor, veterinary)
+                .withTipoConsulta(TipoConsulta.PRESENCIAL)
+                .withDate(date)
+                .build();
+    }
+
+    public static Consulta criarConsultaOnline(Pet pet, Tutor tutor, Veterinario veterinary, LocalDateTime date) {
+        return new Consulta.Builder(pet, tutor, veterinary)
+                .withTipoConsulta(TipoConsulta.ONLINE)
+                .withDate(date)
+                .build();
     }
 }
