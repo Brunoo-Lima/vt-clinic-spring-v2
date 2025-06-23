@@ -2,7 +2,6 @@ package com.pfc.veterinaryclinic.controller;
 
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.facade.PetFacade;
-import com.pfc.veterinaryclinic.service.PetService;
 import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,18 +16,15 @@ import java.util.List;
 public class PetPageController {
     private static final Logger log = LoggerFactory.getLogger(PetPageController.class);
 
-    private final PetService petService;
     private final PetFacade petFacade;
 
-
-    public PetPageController(PetService petService, PetFacade petFacade) {
-        this.petService = petService;
+    public PetPageController(PetFacade petFacade) {
         this.petFacade = petFacade;
     }
 
     @GetMapping
     public String pets(Model model) {
-        List<Pet> pets = petService.listarTodos();
+        List<Pet> pets = petFacade.listarTodos();
         model.addAttribute("pets", pets);
         String fragment = "pets :: content";
         log.info("Carregando fragmento: {}", fragment); // Log para depuração

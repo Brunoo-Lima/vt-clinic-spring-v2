@@ -3,6 +3,7 @@ package com.pfc.veterinaryclinic.facade;
 
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Tutor;
+import com.pfc.veterinaryclinic.entity.Veterinario;
 import com.pfc.veterinaryclinic.service.PetService;
 import com.pfc.veterinaryclinic.service.TutorService;
 import javassist.NotFoundException;
@@ -44,7 +45,7 @@ public class PetFacade {
      * Cria um novo pet.
      */
     public void criarPet(Pet pet) throws NotFoundException {
-        // Aqui você pode adicionar validações futuras, como:
+        // adicionar validações futuras, como:
         // - tutorService.buscarPorId(pet.getTutor().getId()) para validar se o tutor existe.
         petService.criarPet(pet);
     }
@@ -54,6 +55,10 @@ public class PetFacade {
      */
     public void atualizarPet(String id, Pet pet) {
         petService.atualizarPet(id, pet);
+    }
+
+    public List<Pet> listarTodos() {
+        return petService.listarTodos();
     }
 
 }

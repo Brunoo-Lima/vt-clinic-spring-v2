@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tutores")
-public class TutorController {
+public class TutorApiController {
 
     @Autowired
     private TutorService ownerService;

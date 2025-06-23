@@ -8,6 +8,9 @@ import com.pfc.veterinaryclinic.service.VeterinarioService;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ConsultaFacade {
 
@@ -38,6 +41,15 @@ public class ConsultaFacade {
         model.addAttribute("pets", petService.listarTodos());
     }
 
+    public void prepararFormularioEdicao(String id, Model model) {
+        Consulta consulta = consultaService.buscarPorId(id);
+        model.addAttribute("consulta", consulta);
+        model.addAttribute("veterinarios", veterinarioService.listarTodas());
+        model.addAttribute("tutores", tutorService.listarTodas());
+        model.addAttribute("pets", petService.listarTodos());
+
+    }
+
     /**
      * Cria uma nova consulta, com validações futuras se necessário.
      */
@@ -45,4 +57,13 @@ public class ConsultaFacade {
         // Aqui você pode adicionar regras de negócio, ex: checar disponibilidade
         consultaService.criarConsulta(consulta);
     }
+
+    public void atualizar(String id, Consulta consulta) {
+        consultaService.atualizarConsulta(id, consulta);
+    }
+
+    public List<Consulta> listarTodos() {
+        return consultaService.listarTodos();
+    }
+
 }

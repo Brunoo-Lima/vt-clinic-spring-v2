@@ -4,6 +4,7 @@ import com.pfc.veterinaryclinic.entity.Consulta;
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Veterinario;
 import com.pfc.veterinaryclinic.enums.ConsultaStatus;
+import com.pfc.veterinaryclinic.exception.PetNotFoundException;
 import com.pfc.veterinaryclinic.repository.ConsultaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,11 @@ public class ConsultaService {
     }
 
     public Consulta criarConsulta(Consulta consulta) {
-        consulta.setStatus(ConsultaStatus.SCHEDULED);
+        consulta.setStatus(ConsultaStatus.AGENDADA);
         return consultaRepository.save(consulta);
     }
 
     public Consulta atualizarConsulta(String id, Consulta consulta) {
-        if (!consultaRepository.existsById(id)) {
-            throw new RuntimeException("Consulta não encontrado");
-        }
-        consulta.setId(id);
         return consultaRepository.save(consulta);
     }
 
@@ -37,8 +34,9 @@ public class ConsultaService {
         consultaRepository.deleteById(id);
     }
 
-    public Optional<Consulta> buscarPorId(String id) {
-        return consultaRepository.findById(id);
+    public Consulta buscarPorId(String id) {
+        return consultaRepository.findById(id)
+                .orElseThrow(() -> new PetNotFoundException("Consulta com ID " + id + " não encontrado"));
     }
 
     public List<Consulta> listarTodos() {
@@ -47,7 +45,7 @@ public class ConsultaService {
 
 //     Buscar consulta por ID
     public Optional<Consulta> buscarConsultaPorId(String id) {
-        return consultaRepository.findById(id);
+    return consultaRepository.findById(id);
     }
 
 //     Buscar consultas por pet

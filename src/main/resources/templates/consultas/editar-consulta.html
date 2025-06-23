@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar consulta</title>
+  <title>Editar consulta</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -16,13 +16,13 @@
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="p-6">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-gray-800">Nova Consulta</h3>
+          <h3 class="text-xl font-bold text-gray-800">Editar Consulta</h3>
           <a th:href="@{/}" class="text-gray-500 hover:text-gray-700">
             <i class="fas fa-times"></i>
           </a>
         </div>
 
-        <form th:action="@{/consultas}" th:object="${consulta}" method="post">
+        <form th:action="@{/consultas/editar/{id}(id=${consulta.id})}" th:object="${consulta}" method="post">
           <div class="mb-4 flex flex-col gap-y-6">
             <select id="pet" th:field="*{pet}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required ...>
               <option value="">Selecione um pet</option>
@@ -42,15 +42,37 @@
 
             <input type="text" th:field="*{symptoms}" placeholder="Digite o sintomas" required ...>
 
-            <input type="datetime-local" th:field="*{date}" required ...>
-          </div>
+            <input type="text" th:field="*{diagnostic}" placeholder="Digite o diagnostico" required ...>
+
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="dateInput">
+                Data da consulta
+              </label>
+              <input type="datetime-local" th:field="*{date}" id="dateInput" required
+                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="statusSelect">
+                Status da consulta
+              </label>
+              <select id="statusSelect" th:field="*{status}"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required>
+                <option value="">Selecione um status</option>
+                <option value="FINALIZADA">FINALIZADA</option>
+                <option value="CANCELADA">CANCELADA</option>
+                <option value="PERDIDA">PERDIDA</option>
+                <option value="AGENDADA">AGENDADA</option>
+              </select>
+            </div>
 
           <div class="flex justify-end space-x-3 mt-6">
             <a th:href="@{/}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
               Voltar
             </a>
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Agendar
+              Salvar alteração
             </button>
           </div>
         </form>
@@ -59,6 +81,24 @@
   </div>
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const statusSelect = document.getElementById("statusSelect");
+    const dateInput = document.getElementById("dateInput");
+
+    function toggleDateDisabled() {
+      const status = statusSelect.value;
+      const desabilitar = status === "FINALIZADA" || status === "PERDIDA";
+      dateInput.disabled = desabilitar;
+    }
+
+    // Chama ao carregar (caso esteja vindo do backend com status já selecionado)
+    toggleDateDisabled();
+
+    // Atualiza quando o status for alterado
+    statusSelect.addEventListener("change", toggleDateDisabled);
+  });
+</script>
 
 </body>
 </html>

@@ -10,15 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/consultas")
-public class ConsultaController {
+public class ConsultaApiController {
 
     @Autowired
     private ConsultaService consultaService;
@@ -85,14 +82,16 @@ public class ConsultaController {
 //    }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Consulta> updateConsultation(@PathVariable String id, @RequestBody Consulta appointmentDetails) {
-        Consulta updatedAppointment = consultaService.atualizarConsulta(id, appointmentDetails);
-        return ResponseEntity.ok(updatedAppointment);
+
+    @PostMapping("/editar/{id}")
+    public String updateConsultation(@PathVariable("id") String id, @ModelAttribute Consulta appointmentDetails) {
+        consultaService.atualizarConsulta(id, appointmentDetails);
+        return "redirect:/consultas";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteConsultation(@PathVariable String id) {
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deleteConsultation(@PathVariable("id") String id) {
         consultaService.deletarConsulta(id);
         return ResponseEntity.noContent().build();
     }

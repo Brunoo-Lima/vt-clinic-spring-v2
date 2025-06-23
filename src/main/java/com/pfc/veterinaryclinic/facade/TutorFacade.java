@@ -1,9 +1,12 @@
 package com.pfc.veterinaryclinic.facade;
 
 import com.pfc.veterinaryclinic.entity.Tutor;
+import com.pfc.veterinaryclinic.entity.Veterinario;
 import com.pfc.veterinaryclinic.service.TutorService;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+
+import java.util.List;
 
 @Service
 public class TutorFacade {
@@ -43,5 +46,9 @@ public class TutorFacade {
      */
     public void atualizarTutor(String id, Tutor tutor) {
         tutorService.atualizar(id, tutor);
+    }
+
+    public List<Tutor> listarTodos() {
+        return tutorService.listarTodas();
     }
 }

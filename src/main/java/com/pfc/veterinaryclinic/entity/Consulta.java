@@ -36,6 +36,7 @@ public class Consulta {
         this.diagnostic = builder.diagnostic;
         this.symptoms = builder.symptoms;
         this.date = builder.date;
+        this.status = builder.status;
     }
 
     public static class Builder {
@@ -46,6 +47,7 @@ public class Consulta {
         private String diagnostic = "Diagnóstico não informado";
         private String symptoms = "Sintomas não informados";
         private LocalDateTime date = LocalDateTime.now();
+        private ConsultaStatus status;
 
         public Builder () {}
 
@@ -56,6 +58,7 @@ public class Consulta {
             this.pet = pet;
             this.veterinary = veterinary;
             this.tutor = tutor;
+            this.status = ConsultaStatus.AGENDADA;
         }
 
         public Builder withId(String id) {
