@@ -1,15 +1,11 @@
 package com.pfc.veterinaryclinic.facade;
 
 import com.pfc.veterinaryclinic.entity.Consulta;
-import com.pfc.veterinaryclinic.service.ConsultaService;
-import com.pfc.veterinaryclinic.service.PetService;
-import com.pfc.veterinaryclinic.service.TutorService;
-import com.pfc.veterinaryclinic.service.VeterinarioService;
+import com.pfc.veterinaryclinic.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ConsultaFacade {
@@ -18,17 +14,20 @@ public class ConsultaFacade {
     private final VeterinarioService veterinarioService;
     private final TutorService tutorService;
     private final PetService petService;
+    private final NotificacaoService notificacaoService;
 
     public ConsultaFacade(
             ConsultaService consultaService,
             VeterinarioService veterinarioService,
             TutorService tutorService,
-            PetService petService
+            PetService petService,
+            NotificacaoService notificacaoService
     ) {
         this.consultaService = consultaService;
         this.veterinarioService = veterinarioService;
         this.tutorService = tutorService;
         this.petService = petService;
+        this.notificacaoService = notificacaoService;
     }
 
     /**
@@ -54,8 +53,10 @@ public class ConsultaFacade {
      * Cria uma nova consulta, com validações futuras se necessário.
      */
     public void criarConsulta(Consulta consulta) {
-        // Aqui você pode adicionar regras de negócio, ex: checar disponibilidade
         consultaService.criarConsulta(consulta);
+
+        String nameTutor = consulta.getPet().getTutor().getName();
+        notificacaoService.notificar(nameTutor, "Consulta foi agendada com sucesso!");
     }
 
     public void atualizar(String id, Consulta consulta) {
