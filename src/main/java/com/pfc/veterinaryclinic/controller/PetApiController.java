@@ -7,16 +7,18 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/pets")
-public class PetController {
+public class PetApiController {
 
     @Autowired
     private PetService petService;
+
 
     @PostMapping
     public ResponseEntity<Pet> createPet(@RequestBody Pet pet) throws NotFoundException {

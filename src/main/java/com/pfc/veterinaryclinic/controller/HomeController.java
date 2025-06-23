@@ -1,6 +1,9 @@
 package com.pfc.veterinaryclinic.controller;
 
 import com.pfc.veterinaryclinic.entity.*;
+import com.pfc.veterinaryclinic.facade.ConsultaFacade;
+import com.pfc.veterinaryclinic.facade.PetFacade;
+import com.pfc.veterinaryclinic.facade.TutorFacade;
 import com.pfc.veterinaryclinic.repository.TutorRepository;
 import com.pfc.veterinaryclinic.service.*;
 import javassist.NotFoundException;
@@ -25,14 +28,18 @@ public class HomeController {
     @Autowired
     private VeterinarioService veterinarianService;
     @Autowired
-    private PetService petService;
-    @Autowired
     private ConsultaService consultaService;
     @Autowired
     private TutorService tutorService;
 
     @Autowired
     private TutorRepository tutorRepository;
+
+    @Autowired
+    private ConsultaFacade consultaFacade;
+
+    @Autowired
+    private TutorFacade tutorFacade;
 
     @GetMapping("/login")
     public String login() {
@@ -94,49 +101,6 @@ public class HomeController {
     }
 
 
-    @GetMapping("/pets")
-    public String pets(Model model) {
-        List<Pet> pets = petService.listarTodos();
-        model.addAttribute("pets", pets);
-        String fragment = "pets :: content";
-        log.info("Carregando fragmento: {}", fragment); // Log para depuração
-        model.addAttribute("content", fragment);
-        return "pets";
-    }
-
-    @GetMapping("/pets/criar-pet")
-    public String mostrarFormularioPet(Model model) {
-        // Adiciona um objeto vazio para o formulário (se necessário)
-        model.addAttribute("pet", new Pet() );
-        model.addAttribute("tutores", tutorService.listarTodas());
-        log.info("Entrou no formulário de criar pet");
-        // Retorna o template Thymeleaf
-        return "pets/criar-pet";
-
-    }
-
-    @GetMapping("/pets/editar-pet/{id}")
-    public String editarFormularioPets(@PathVariable("id") String id, Model model) {
-        List<Tutor> tutores = tutorService.listarTodas();
-        Pet petExistente = petService.buscarPorId(id);
-        model.addAttribute("pet", petExistente);
-        model.addAttribute("tutores", tutores);
-        log.info("Entrou no formulário de editar pet para id: {}", id);
-        return "pets/editar-pet"; // nome do template Thymeleaf
-    }
-
-    @PostMapping("/pets")
-    public String salvarPet(@ModelAttribute Pet pet) throws NotFoundException {
-        petService.criarPet(pet);
-        return "redirect:/pets";
-    }
-
-    @PostMapping("/pets/editar/{id}")
-    public String updatePet(@PathVariable("id") String id, @ModelAttribute Pet pet) {
-        petService.atualizarPet(id, pet);
-        return "redirect:/pets";
-    }
-
     @GetMapping("/consultas")
     public String consultas(Model model) {
         List<Consulta> consultas = consultaService.listarTodos();
@@ -149,17 +113,13 @@ public class HomeController {
 
     @GetMapping("/consultas/criar-consulta")
     public String mostrarFormularioConsulta(Model model) {
-        model.addAttribute("consulta", new Consulta());
-        model.addAttribute("veterinarios", veterinarianService.listarTodas());
-        model.addAttribute("tutores", tutorService.listarTodas());
-        model.addAttribute("pets", petService.listarTodos());
-
+        consultaFacade.prepararFormularioConsulta(model);
         return "consultas/criar-consulta";
     }
 
     @PostMapping("/consultas")
     public String salvarConsulta(@ModelAttribute Consulta consulta) throws NotFoundException {
-        consultaService.criarConsulta(consulta);
+        consultaFacade.criarConsulta(consulta);
         return "redirect:/consultas";
     }
 
@@ -176,8 +136,7 @@ public class HomeController {
 
     @GetMapping("/tutores/criar-tutor")
     public String mostrarFormularioTutor(Model model) {
-        // Adiciona um objeto vazio para o formulário (se necessário)
-        model.addAttribute("tutor", new Tutor() );
+        tutorFacade.prepararFormularioCriacao(model);
         log.info("Entrou no formulário de criar tutor");
         // Retorna o template Thymeleaf
         return "tutores/criar-tutor";
@@ -186,21 +145,20 @@ public class HomeController {
 
     @GetMapping("/tutores/editar-tutor/{id}")
     public String editarFormularioTutores(@PathVariable("id") String id, Model model) {
-        Tutor tutorExistente = tutorService.buscarPorId(id);
-        model.addAttribute("tutor", tutorExistente);
+        tutorFacade.prepararFormularioEdicao(id, model);
         log.info("Entrou no formulário de editar tutor para id: {}", id);
         return "tutores/editar-tutor"; // nome do template Thymeleaf
     }
 
     @PostMapping("/tutores")
-    public String salvarPet(@ModelAttribute Tutor tutor) {
-        tutorService.criarTutor(tutor);
+    public String salvarTutor(@ModelAttribute Tutor tutor) {
+        tutorFacade.criarTutor(tutor);
         return "redirect:/tutores";
     }
 
     @PostMapping("/tutores/editar/{id}")
     public String updateTutor(@PathVariable("id") String id, @ModelAttribute Tutor tutor) {
-        tutorService.atualizar(id, tutor);
+        tutorFacade.atualizarTutor(id, tutor);
         return "redirect:/tutores";
     }
 
