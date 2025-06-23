@@ -2,9 +2,9 @@ package com.pfc.veterinaryclinic.controller;
 
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.facade.PetFacade;
+import com.pfc.veterinaryclinic.singleton.ClinicLogger;
 import javassist.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -14,7 +14,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/pets")
 public class PetPageController {
-    private static final Logger log = LoggerFactory.getLogger(PetPageController.class);
+
+    @Autowired
+    private ClinicLogger clinicLogger;
 
     private final PetFacade petFacade;
 
@@ -27,7 +29,7 @@ public class PetPageController {
         List<Pet> pets = petFacade.listarTodos();
         model.addAttribute("pets", pets);
         String fragment = "pets :: content";
-        log.info("Carregando fragmento: {}", fragment); // Log para depuração
+        clinicLogger.log("Pets");
         model.addAttribute("content", fragment);
         return "pets";
     }
@@ -35,14 +37,14 @@ public class PetPageController {
     @GetMapping("/criar-pet")
     public String mostrarFormularioPet(Model model) {
         petFacade.prepararFormularioCriacao(model);
-        log.info("Entrou no formulário de salvar pet");
+        clinicLogger.log("Entrou no formulário de salvar pet");
         return "pets/criar-pet";
     }
 
     @GetMapping("/editar-pet/{id}")
     public String editarFormularioPet(@PathVariable("id") String id, Model model) {
         petFacade.prepararFormularioEdicao(id, model);
-        log.info("Entrou no formulário de editar pet para id: {}", id);
+        clinicLogger.log("Entrou no formulário de editar pet");
         return "pets/editar-pet";
     }
 

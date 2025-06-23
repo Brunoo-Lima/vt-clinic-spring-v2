@@ -24,21 +24,23 @@
 
         <form th:action="@{/consultas}" th:object="${consulta}" method="post">
           <div class="mb-4 flex flex-col gap-y-6">
-            <select id="pet" th:field="*{pet}" required ...>
+            <select id="pet" th:field="*{pet}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required ...>
               <option value="">Selecione um pet</option>
               <option th:each="pet : ${pets}" th:value="${pet.id}" th:text="${pet.name}"></option>
             </select>
 
 
-            <select id="tutor" th:field="*{tutor}" required ...>
+            <select id="tutor" th:field="*{tutor}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required ...>
               <option value="">Selecione um tutor</option>
               <option th:each="tutor : ${tutores}" th:value="${tutor.id}" th:text="${tutor.name}"></option>
             </select>
 
-            <select id="veterinario" th:field="*{veterinary}" required ...>
+            <select id="veterinario" th:field="*{veterinary}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required ...>
               <option value="">Selecione um veterinário</option>
               <option th:each="vet : ${veterinarios}" th:value="${vet.id}" th:text="${vet.name}"></option>
             </select>
+
+            <input type="text" th:field="*{symptoms}" placeholder="Digite o sintomas" required ...>
 
             <input type="datetime-local" th:field="*{date}" required ...>
           </div>

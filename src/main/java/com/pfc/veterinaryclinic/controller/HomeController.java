@@ -1,6 +1,7 @@
 package com.pfc.veterinaryclinic.controller;
 
 import com.pfc.veterinaryclinic.repository.TutorRepository;
+import com.pfc.veterinaryclinic.singleton.ClinicLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
+    @Autowired
+    private ClinicLogger clinicLogger;
 
     @Autowired
     private TutorRepository tutorRepository;
@@ -27,6 +30,7 @@ public class HomeController {
         modelAndView.addObject("content", fragment);
         modelAndView.addObject("hasTutores", hasTutores); // Adiciona ao modelo
 
+        clinicLogger.log("Acessou a home");
         return modelAndView;
     }
 

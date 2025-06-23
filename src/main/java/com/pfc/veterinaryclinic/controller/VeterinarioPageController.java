@@ -2,8 +2,8 @@ package com.pfc.veterinaryclinic.controller;
 
 import com.pfc.veterinaryclinic.entity.Veterinario;
 import com.pfc.veterinaryclinic.facade.VeterinarioFacade;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.pfc.veterinaryclinic.singleton.ClinicLogger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/veterinarios")
 public class VeterinarioPageController {
-    private static final Logger log = LoggerFactory.getLogger(PetPageController.class);
+    @Autowired
+    private ClinicLogger clinicLogger;
 
     private final VeterinarioFacade veterinarioFacade;
 
@@ -28,13 +29,15 @@ public class VeterinarioPageController {
 
         String fragment = "veterinarios :: content";
         model.addAttribute("content", fragment);
+
+        clinicLogger.log("Veterinários");
         return "veterinarios";
     }
 
     @GetMapping("/criar-veterinario")
     public String mostrarFormularioVeterinario(Model model) {
         veterinarioFacade.prepararFormularioCriacao(model);
-        log.info("Entrou no formulário de criar veterinário");
+        clinicLogger.log("Entrou no formulário de criar veterinário");
         return "veterinarios/criar-veterinario";
 
     }
@@ -42,7 +45,7 @@ public class VeterinarioPageController {
     @GetMapping("/editar-veterinario/{id}")
     public String editarFormularioVeterinario(@PathVariable("id") String id, Model model) {
         veterinarioFacade.prepararFormularioEdicao(id, model);
-        log.info("Entrou no formulário de editar veterinário para id: {}", id);
+        clinicLogger.log("Entrou no formulário de editar veterinário");
         return "veterinarios/editar-veterinario";
     }
 
