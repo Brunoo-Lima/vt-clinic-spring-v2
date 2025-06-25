@@ -17,14 +17,14 @@ public class VeterinarioFacade {
     }
 
     /**
-     * Prepara o formulário para criação de tutor.
+     * Prepara o formulário para criação.
      */
     public void prepararFormularioCriacao(Model model) {
         model.addAttribute("veterinario", new Veterinario());
     }
 
     /**
-     * Prepara o formulário de edição, carregando o tutor pelo ID.
+     * Prepara o formulário de edição, carregando pelo ID.
      */
     public void prepararFormularioEdicao(String id, Model model) {
         Veterinario veterinario = veterinarioService.buscarPorId(id);
@@ -32,15 +32,14 @@ public class VeterinarioFacade {
     }
 
     /**
-     * Cria um novo tutor.
+     * Cria um novo veterinario.
      */
     public void criarVeterinario(Veterinario veterinario) {
-        // Exemplo de validação futura: verificar duplicidade de crmv
         veterinarioService.criarVeterinario(veterinario);
     }
 
     /**
-     * Atualiza os dados de um tutor existente.
+     * Atualiza os dados de um veterinario existente.
      */
     public void atualizarVeterinario(String id, Veterinario veterinario) {
         veterinarioService.atualizar(id, veterinario);

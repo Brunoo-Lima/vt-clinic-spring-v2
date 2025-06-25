@@ -15,8 +15,8 @@ public class NotificacaoService {
         this.notificador = notificador;
     }
 
-    public void notificar(String emailOuNumero, String mensagem) {
-        notificador.notificar(emailOuNumero, mensagem);
+    public void notificar(String identificador, String mensagem) {
+        notificador.notificar(identificador, mensagem);
     }
 }
 

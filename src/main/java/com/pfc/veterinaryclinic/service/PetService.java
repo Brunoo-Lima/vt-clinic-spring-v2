@@ -2,9 +2,7 @@ package com.pfc.veterinaryclinic.service;
 
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Tutor;
-import com.pfc.veterinaryclinic.entity.Veterinario;
 import com.pfc.veterinaryclinic.exception.PetNotFoundException;
-import com.pfc.veterinaryclinic.exception.VeterinarioNotFoundException;
 import com.pfc.veterinaryclinic.repository.PetRepository;
 import com.pfc.veterinaryclinic.repository.TutorRepository;
 import javassist.NotFoundException;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -30,7 +27,7 @@ public class PetService {
     }
 
     public Pet criarPet(Pet pet) throws NotFoundException {
-        Tutor tutorCompleto = tutorRepository.findById(pet.getTutor().getId()).orElseThrow(() -> new NotFoundException("Ta isso")); // ou repository
+        Tutor tutorCompleto = tutorRepository.findById(pet.getTutor().getId()).orElseThrow(() -> new NotFoundException("Ta isso"));
         pet.setTutor(tutorCompleto);
         return petRepository.save(pet);
     }
@@ -55,10 +52,6 @@ public class PetService {
     public List<Pet> listarTodos() {
         return petRepository.findAll();
     }
-
-//    public Pet buscarPorNomeETutor (String name, Tutor tutor){
-//        return petRepository.findPetAndTutor(name, tutor);
-//    }
 
     // Encontra pets por dono
     public List<Pet> buscarPorTutor(Tutor tutor) {

@@ -35,7 +35,6 @@ public class ConsultaService {
         // Cria consulta usando a factory
         Consulta consulta = ConsultaFactory.criarConsulta(tipo, pet, tutor, vet, date);
 
-        // Setar outras coisas se precisar (ex: status)
         consulta.setStatus(ConsultaStatus.AGENDADA);
 
         return consultaRepository.save(consulta);

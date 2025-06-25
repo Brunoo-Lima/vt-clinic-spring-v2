@@ -50,7 +50,7 @@ public class ConsultaFacade {
     }
 
     /**
-     * Cria uma nova consulta, com validações futuras se necessário.
+     * Cria uma nova consulta.
      */
     public void criarConsulta(Consulta consulta) {
         consultaService.criarConsulta(consulta);

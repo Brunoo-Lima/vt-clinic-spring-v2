@@ -1,7 +1,6 @@
 package com.pfc.veterinaryclinic.facade;
 
 import com.pfc.veterinaryclinic.entity.Tutor;
-import com.pfc.veterinaryclinic.entity.Veterinario;
 import com.pfc.veterinaryclinic.service.TutorService;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -36,8 +35,6 @@ public class TutorFacade {
      * Cria um novo tutor.
      */
     public void criarTutor(Tutor tutor) {
-        // Exemplo de validação futura: verificar duplicidade por CPF
-        // if (tutorService.existsByCpf(tutor.getCpf())) { throw new RuntimeException("CPF já cadastrado"); }
         tutorService.criarTutor(tutor);
     }
 
@@ -48,6 +45,9 @@ public class TutorFacade {
         tutorService.atualizar(id, tutor);
     }
 
+    /**
+     * Lista todos os tutores.
+     */
     public List<Tutor> listarTodos() {
         return tutorService.listarTodas();
     }

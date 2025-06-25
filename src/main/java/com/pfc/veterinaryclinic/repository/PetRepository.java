@@ -3,11 +3,10 @@ package com.pfc.veterinaryclinic.repository;
 import com.pfc.veterinaryclinic.entity.Pet;
 import com.pfc.veterinaryclinic.entity.Tutor;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-//
+
 @Repository
 public interface PetRepository extends MongoRepository<Pet, String> {
 
@@ -18,12 +17,5 @@ public interface PetRepository extends MongoRepository<Pet, String> {
 
     // Encontra pets por espécie
     List<Pet> findByRace(String race);
-
-//    Pet findPetAndTutor(String name, Tutor tutor);
-
-//    // Consulta customizada para pets com histórico médico contendo termo
-////    @Query("{ 'medicalHistory': { $regex: ?0, $options: 'i' } }")
-//    List<Pet> findByMedicalHistoryContaining(String term);
-//
 
 }

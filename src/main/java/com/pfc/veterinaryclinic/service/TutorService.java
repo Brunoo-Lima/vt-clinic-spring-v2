@@ -12,8 +12,6 @@ import java.util.List;
 public class TutorService {
     @Autowired
     private TutorRepository tutorRepository;
-//    @Autowired
-//    private PetService petService;
 
     public Tutor criarTutor(Tutor tutor) {
         return tutorRepository.save(tutor);
